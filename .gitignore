@@ -1,6 +1,6 @@
 # Generated files
 node_modules
-public/style.css
+public/*.css
 
 # Secrets
 .env
