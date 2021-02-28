@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= q %> - <%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <div class="search_header" id="search_header">
+    	<form method="GET">
+        	<span class="search" id="t"><%= title %>: </span>
+            <input type="text" class="search" id="q" name="q" value="<%= q %>" />
+            <input type="submit" class="search" id="b" />
+        </form>
+    </div>
+    <div class="search_results" id="search_results">
+    	<% if (results.length == 0) { %>
+    		<p>No results found</p>
+    	<% } else { %>
+	    	<p>Showing <%= results.length %> results for <%= q %></p>
+	    	<% for (var i = 0; i < results.length; i++) { %>
+		    	<div class="search_results_item">
+		    		<a class="search_results_item_title" href="TODO">
+		    			<%= results[i].title %>
+		    		</a>
+		    		<div class="search_results_item_authors">
+		    			<%= results[i].authors %>
+		    		</div>
+		    		<div class="search_results_item_journal">
+		    			<%= results[i].journal %>
+		    		</div>
+		    		<div class="search_results_item_summary">
+		    			<%= results[i].summary %>
+		    		</div>
+		    	</div>
+		    <% } %>
+	    <% } %>
+    </div>
+</body>
+</html>
