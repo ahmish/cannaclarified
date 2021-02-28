@@ -79,7 +79,6 @@ function db_search(q, complete) {
 	// TODO
 	//   - error handling for empty/null results
 	//   - account for results that spill beyond "firstPage" (eg: results > 100)
-	//   - expand current assumption that only 1 condition is found by search
 	//   - expand current assumption that only conditions are being searched
 	//   - move away from airtable for simpler querying, lower latency
 }
