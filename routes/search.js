@@ -5,8 +5,9 @@ var airtable = require('airtable');
 
 /* GET search results */
 router.get('/', function(req, res, next) {
-	console.log('query', req.query);
+	console.log('pre db_search for', req.query.q);
 	db_search(req.query.q, function(results) {
+		console.log("post db_search for", req.query.q)
 		res.render('search', { 
 	    	title:   'CannaClarified',
 	    	q: 		 req.query.q,
@@ -21,50 +22,58 @@ router.get('/', function(req, res, next) {
 function db_search(q, complete) {
 	const db = airtable.base("app869zB8b6uHjyHS");
 
-	var formula = `OR(FIND(LOWER("${q}"), LOWER(Description)), FIND(LOWER("${q}"), LOWER(Synonyms)))`;
-	console.log('formula', formula);
-
-	var conditions = db("conditions").select({filterByFormula: formula});
 	var condition_ids = [];
 	var results = [];
 
-	conditions.firstPage(function(error, records) {
+	var conditions_formula = `OR(FIND(LOWER("${q}"), LOWER(Description)), FIND(LOWER("${q}"), LOWER(Synonyms)))`;
+	console.log('conditions formula:', conditions_formula);
+
+	db("conditions").select({filterByFormula: conditions_formula}).firstPage(function(error, records) {
 		if (records == null || records.length == 0) {
 			complete(results);
+			return;
 		}
 
-	    records.forEach(function(record) {
-    	    console.log('condition', record.get('Description'));
-    	    condition_ids.push(record.get('ID'));
-    	});
+		condition_ids = records.map((r) => r.get('ID'));
 
-    	console.log('condition ids', condition_ids);
+    	console.log('conditions:', condition_ids, records.map((r) => r.get('Description')));
+
     	if (condition_ids.length == 0) {
 			throw "expected at least 1 condition id";
 		}
 
+		var evidence_formula = '';
     	condition_ids.forEach(function(id) {
-			const evidence = db("evidence").select({filterByFormula: `FIND(${id}, Condition)`});
-			console.log('two', `FIND(${id}, Condition)`);
-			evidence.firstPage(function(error, records) {
-				if (records == null || records.length == 0) {
-					complete(results);
-				}
-
-			    records.forEach(function(record) {
-		    	    results.push({
-		    	    	title:   record.get('Study Title'),
-						authors: record.get('First Author'),
-						journal: record.get('Journal'),
-						summary: record.get('Summary')
-		    	    });
-		    	});
-
-		    	console.log('evidence', results);
-
-		    	complete(results);
-		    });
+			if (condition_ids.length == 1) {
+				evidence_formula = `FIND(${id}, Condition)`;
+			} else {
+				evidence_formula = "OR(";
+				condition_ids.forEach((id) => {evidence_formula += `FIND(${id}, Condition),`;});
+				evidence_formula = evidence_formula.replace(/,+$/, ")");
+			}
 		});
+
+		console.log('evidence formula:', evidence_formula);
+
+		db("evidence").select({filterByFormula: evidence_formula}).firstPage(function(error, records) {
+			if (records == null || records.length == 0) {
+				complete(results);
+				return;
+			}
+
+		    records.forEach(function(record) {
+	    	    results.push({
+	    	    	title:   record.get('Study Title'),
+					authors: record.get('First Author'),
+					journal: record.get('Journal'),
+					summary: record.get('Summary')
+	    	    });
+	    	});
+
+	    	console.log('evidence: ', results.length, results.map((r) => r.title));
+
+	    	complete(results);
+	    });
 	});
 
 	// TODO
