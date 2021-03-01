@@ -9,9 +9,10 @@ router.get('/', function(req, res, next) {
 	db_search(req.query.q, function(results) {
 		console.log("post db_search for", req.query.q)
 		res.render('search', { 
-	    	title:   'CannaClarified',
-	    	q: 		 req.query.q,
-	    	results: results
+	    	title:      'CannaClarified',
+	    	q:          req.query.q,
+	    	conditions: results.conditions,
+	    	evidence:   results.evidence
 		});
 	});
 });
@@ -22,21 +23,21 @@ router.get('/', function(req, res, next) {
 function db_search(q, complete) {
 	const db = airtable.base("app869zB8b6uHjyHS");
 
-	var condition_ids = [];
-	var results = [];
+	var conditions = [];
+	var evidence   = [];
 
 	var conditions_formula = `OR(FIND(LOWER("${q}"), LOWER(Description)), FIND(LOWER("${q}"), LOWER(Synonyms)))`;
 	console.log('conditions formula:', conditions_formula);
 
 	db("conditions").select({filterByFormula: conditions_formula}).firstPage(function(error, records) {
 		if (records == null || records.length == 0) {
-			complete(results);
+			complete({evidence: evidence, conditions: conditions});
 			return;
 		}
 
-		condition_ids = records.map((r) => r.get('ID'));
-
-    	console.log('conditions:', condition_ids, records.map((r) => r.get('Description')));
+		conditions = records.map((r) => r.get('Description'));
+		var condition_ids = records.map((r) => r.get('ID'));
+    	console.log('conditions:', condition_ids, conditions);
 
     	if (condition_ids.length == 0) {
 			throw "expected at least 1 condition id";
@@ -57,12 +58,12 @@ function db_search(q, complete) {
 
 		db("evidence").select({filterByFormula: evidence_formula}).firstPage(function(error, records) {
 			if (records == null || records.length == 0) {
-				complete(results);
+				complete({evidence: evidence, conditions: conditions});
 				return;
 			}
 
 		    records.forEach(function(record) {
-	    	    results.push({
+	    	    evidence.push({
 	    	    	title:   record.get('Study Title'),
 					authors: record.get('First Author'),
 					journal: record.get('Journal'),
@@ -70,9 +71,9 @@ function db_search(q, complete) {
 	    	    });
 	    	});
 
-	    	console.log('evidence: ', results.length, results.map((r) => r.title));
+	    	console.log('evidence:', evidence.length, evidence.map((r) => r.title));
 
-	    	complete(results);
+	    	complete({evidence: evidence, conditions: conditions});
 	    });
 	});
 
