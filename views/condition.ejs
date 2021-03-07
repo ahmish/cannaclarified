@@ -33,7 +33,7 @@
                     </tr>
                     <% for (var i = 0; i < evidence.length; i++) { %>
                         <tr>
-                            <td><%= `${evidence[i].author} (${evidence[i].year})` %></td>
+                            <td><a href="<%= evidence[i].link %>" target="_blank"><%= `${evidence[i].author} (${evidence[i].year})` %></a></td>
                             <td><%= evidence[i].design.join(', ') %></td>
                             <td><%= evidence[i].population %></td>
                             <td><%= evidence[i].outcome %></td>
