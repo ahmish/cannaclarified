@@ -30,7 +30,7 @@ function db_search(condition_name, complete) {
     var condition = {};
     var evidence  = [];
 
-    var conditions_formula = `FIND(LOWER("${condition_name}"), LOWER(Description))`;
+    var conditions_formula = `REGEX_MATCH(Description, "(?i)^(${condition_name})$")`;
     console.log('conditions formula:', conditions_formula);
 
     db("conditions").select({filterByFormula: conditions_formula}).firstPage(function(error, records) {
@@ -38,7 +38,7 @@ function db_search(condition_name, complete) {
             complete({condition: condition, evidence: evidence});
             return;
         } else if (records.length > 1) {
-            throw "expected 1 condition";
+            throw new Error("expected 1 condition");
         }
 
         condition = {
