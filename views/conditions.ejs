@@ -8,7 +8,14 @@
     <%- include('partials/search_header', {q: ''}) %>
     <div class="conditions_list" id="conditions_list">
     	<p>Browsing <%= conditions.length %> conditions</p>
+        <% var c = ''; %>
     	<% for (var i = 0; i < conditions.length; i++) { %>
+            <% if (c != conditions[i][0]) { %>
+                <div class="conditions_separator">
+                    <% c = conditions[i][0]; %>
+                    <%= c %>
+                </div>
+            <% } %>
 	    	<div class="conditions_item">
 	    		<a class="conditions_item_title" href="/condition/<%= conditions[i] %>"><%= conditions[i] %></a>
 	    	</div>
