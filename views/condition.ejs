@@ -6,6 +6,45 @@
 </head>
 <body>
     <%- include('partials/search_header', {q: ''}) %>
-    TODO: create <%= condition.description %> page
+    <div>
+        <h1><%= condition.description %></h1>
+        <div>
+            <h3>Introduction</h3>
+            <p><%= condition.introduction %></p>
+        </div>
+        <div>
+            <h3>Insights</h3>
+            <p><%= condition.insights %></p>
+        </div>
+        <div>
+            <h3>Evidence</h3>
+            <% if (evidence.length == 0) { %>
+                No supporting evidence
+            <% } else { %>
+                <table>
+                    <tr>
+                        <th>Author (Year)</th>
+                        <th>Study Design</th>
+                        <th>Population</th>
+                        <th>Outcome</th>
+                        <th>Problem</th>
+                        <th>Sample Size</th>
+                        <th>Results</th>
+                    </tr>
+                    <% for (var i = 0; i < evidence.length; i++) { %>
+                        <tr>
+                            <td><%= `${evidence[i].author} (${evidence[i].year})` %></td>
+                            <td><%= evidence[i].design.join(', ') %></td>
+                            <td><%= evidence[i].population %></td>
+                            <td><%= evidence[i].outcome %></td>
+                            <td><%= evidence[i].problem %></td>
+                            <td><%= evidence[i].sample_size %></td>
+                            <td><%= evidence[i].results %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            <% } %>
+        </div>
+    </div>
 </body>
 </html>
