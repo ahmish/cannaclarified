@@ -6,11 +6,16 @@
 </head>
 <body>
     <h1><%= title %></h1>
-    <div>
-        <form method="GET" action="/search">
-            <input type="text" class="search" id="q" name="q" autofocus />
-            <input type="submit" class="search" id="b" />
-        </form>
+    <div class="billboard">
+        <div class="billboard_main">
+            <form method="GET" action="/search">
+                <input type="text" class="search" id="q" name="q" autofocus />
+                <input type="submit" class="search" id="b" />
+            </form>
+        </div>
+        <div class="billboard_info">
+            <span><a href="/conditions">Browse conditions</a></span>
+        </div>
     </div>
 </body>
 </html>

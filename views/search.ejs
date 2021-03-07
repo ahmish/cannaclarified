@@ -5,13 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-    <div class="search_header" id="search_header">
-    	<form method="GET">
-        	<span class="search" id="t"><%= title %>: </span>
-            <input type="text" class="search" id="q" name="q" value="<%= q %>" />
-            <input type="submit" class="search" id="b" />
-        </form>
-    </div>
+    <%- include('partials/search_header') %>
     <div class="search_results" id="search_results">
     	<% if (evidence.length == 0) { %>
     		<p>No results found</p>
