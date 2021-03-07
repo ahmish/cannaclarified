@@ -30,7 +30,7 @@ function db_search(condition_name, complete) {
     var condition = {};
     var evidence  = [];
 
-    var conditions_formula = `REGEX_MATCH(Description, "(?i)^(${condition_name})$")`;
+    var conditions_formula = `REGEX_MATCH(Description, "(?i)(\\b${condition_name}\\b)")`;
     console.log('conditions formula:', conditions_formula);
 
     db("conditions").select({filterByFormula: conditions_formula}).firstPage(function(error, records) {
