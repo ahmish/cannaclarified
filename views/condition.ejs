@@ -45,6 +45,14 @@
                 </table>
             <% } %>
         </div>
+        <div>
+            <h3>References</h3>
+            <ol>
+                <% for (var i = 0; i < condition.references.length; i++) { %>
+                    <li><%= condition.references[i] %></li>
+                <% } %>
+            </ol>
+        </div>
     </div>
 </body>
 </html>
