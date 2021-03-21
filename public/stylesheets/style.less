@@ -1,49 +1,71 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
-a {
-  color: #00B7FF;
+h1, h2, h3, h4, h5, h6 {
+	color: #11552d;	
 }
 
-.billboard_info {
-	margin-top: 20px;
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }
 
-.conditions_separator {
-	margin-top: 20px;
+.search-input {
+	padding: .25em 1em .25em;
+	border-radius: 20px;
 }
 
-.search {
-	padding: 5px;
-	border-radius: 10px;
+.search-button {
+	padding: .25em 1em .25em;
+	border-radius: 20px;
 }
 
-#q.search {
-	width: 30%;
+.billboard {
+	margin-top: 15%;
 }
 
-#b.search {
-	width: 80px;
+.billboard .search {
+	margin-top: 3em;
 }
 
-#t.search {
-	font-size: larger;
+.billboard .discover {
+	margin-top: .5em;
 }
 
-.search_header {
+.billboard .search-input {
+	width: 500px;
+}
+
+.header {
+    width: 100%;
+    margin-top: 15px;
 	margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
-.search_results {
-	width: 800px;
+.header .search-input {
+	width: 350px;
 }
 
-.search_results_item {
+.conditions .section {
+	margin-top: 2em;
+	padding-bottom: 1em;
+}
+
+.conditions .item {
+	margin: .5em .5em;
+}
+
+/*.search_results_item {
 	margin-top: 20px;
 }
 
 .search_results_item_title {
 	font-size: larger;
-}
+}*/

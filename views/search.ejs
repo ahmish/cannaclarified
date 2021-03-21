@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%- include('partials/html_head') %>
     <title><%= q %> - <%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
     <%- include('partials/search_header') %>
@@ -29,5 +29,6 @@
 		    <% } %>
 	    <% } %>
     </div>
+    <%- include('partials/html_foot') %>
 </body>
 </html>

@@ -1,7 +1,9 @@
-<div class="search_header" id="search_header">
-	<form method="GET" action="/search">
-        <span class="search" id="t"><a href="/"><%= title %></a>: </span>
-        <input type="text" class="search" id="q" name="q" value="<%= q %>" />
-        <input type="submit" class="search" id="b" />
+<div class="header">
+    <a href="/">
+        <img class="logo" src="/images/logo_small.png" />
+    </a>
+	<form class="search" method="GET" action="/search">
+        <input type="text" class="search-input" id="q" name="q" value="<%= q %>" placeholder="Search for a disease, symptom, ..." />
+        <input type="submit" class="search-button" id="b" value="Search" />
     </form>
 </div>

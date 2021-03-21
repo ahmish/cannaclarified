@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <%- include('partials/html_head') %>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-    <h1><%= title %></h1>
     <div class="billboard">
-        <div class="billboard_main">
-            <form method="GET" action="/search">
-                <input type="text" class="search" id="q" name="q" autofocus />
-                <input type="submit" class="search" id="b" />
-            </form>
-        </div>
-        <div class="billboard_info">
-            <span><a href="/conditions">Browse conditions</a></span>
+        <div class="container">
+            <div class="row">
+                <img class="mx-auto" src="/images/logo_big.png" />
+            </div>
+            <div class="row">
+                <form class="mx-auto text-center search" method="GET" action="/search">
+                    <input type="text" class="search-input" id="q" name="q" placeholder="Search for a disease, symptom, ..." autofocus />
+                    <input type="submit" class="search-button" id="b" value="Search" />
+                </form>
+            </div>
+            <div class="row discover">
+                <p class="mx-auto">
+                    <a href="/conditions">Browse conditions</a>
+                </p>
+            </div>
         </div>
     </div>
+    <%- include('partials/html_foot') %>
 </body>
 </html>

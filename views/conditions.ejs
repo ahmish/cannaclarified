@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <%- include('partials/html_head') %>
     <title>Conditions - <%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
     <%- include('partials/search_header', {q: ''}) %>
-    <div class="conditions_list" id="conditions_list">
-    	<p>Browsing <%= conditions.length %> conditions</p>
+    <div class="conditions">
+        <h1>Browsing <%= conditions.length %> conditions</h1>
         <% var c = ''; %>
-    	<% for (var i = 0; i < conditions.length; i++) { %>
+        <% for (var i = 0; i < conditions.length; i++) { %>
             <% if (c != conditions[i][0]) { %>
-                <div class="conditions_separator">
-                    <% c = conditions[i][0]; %>
-                    <%= c %>
-                </div>
+                <% if (c != '') { %>
+                    </div>
+                    <hr class="separator" />
+                <% } %>
+                <div class="section">
+                    <h4 class="section-header">
+                        <% c = conditions[i][0]; %>
+                        <%= c %>
+                    </h4>
             <% } %>
-	    	<div class="conditions_item">
-	    		<a class="conditions_item_title" href="/condition/<%= conditions[i] %>"><%= conditions[i] %></a>
-	    	</div>
-	    <% } %>
+                    <p class="item">
+                        <a href="/condition/<%= conditions[i] %>"><%= conditions[i] %></a>
+                    </p>
+        <% } %>
     </div>
+    <%- include('partials/html_foot') %>
 </body>
 </html>
