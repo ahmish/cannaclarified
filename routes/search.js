@@ -42,7 +42,7 @@ async function db_search(q) {
             description:  r.get('Description'),
             introduction: r.get('Introduction'),
             insights:     r.get('Insights_highest'),
-            evidence:     r.get('Related evidence').length
+            evidence:     r.get('Related evidence') ? r.get('Related evidence').length : 0
         };
         results.primary.push(condition);
 
@@ -64,6 +64,10 @@ async function db_search(q) {
     }
     
     console.log('related conditions unique', related_conditions);
+
+    if (related_conditions.length == 0) {
+        return results;
+    }
 
     conditions_formula = '';
     if (related_conditions.length == 1) {
@@ -89,7 +93,7 @@ async function db_search(q) {
             description:  r.get('Description'),
             introduction: r.get('Introduction'),
             insights:     r.get('Insights_highest'),
-            evidence:     r.get('Related evidence').length
+            evidence:     r.get('Related evidence') ? r.get('Related evidence').length : 0
         };
         results.secondary.push(condition);
     });
