@@ -4,84 +4,92 @@ var url = require('url');
 var airtable = require('airtable');
 
 /* GET search results */
-router.get('/', function(req, res, next) {
-	console.log('pre db_search for', req.query.q);
-	db_search(req.query.q, function(results) {
-		console.log("post db_search for", req.query.q)
-		res.render('search', { 
-	    	title:      'CannaClarified',
-	    	q:          req.query.q,
-	    	conditions: results.conditions,
-	    	evidence:   results.evidence
-		});
-	});
+router.get('/', async function(req, res, next) {
+    console.log('search query', req.query.q);
+    var results = await db_search_test(req.query.q);
+    console.log('search results', results);
+
+    res.render('search', {
+        title:      'CannaClarified',
+        q:          req.query.q,
+        conditions: results
+    });
 });
 
-// Airtable doesn't support querying on joined tables so working around it for now. General approach is 
-//   1) use search term (q) to look up conditions
-//   2) use condition id to look up evidence
-function db_search(q, complete) {
-	const db = airtable.base("app869zB8b6uHjyHS");
+async function db_search_test(q) {
+    const db = airtable.base("app869zB8b6uHjyHS");
 
-	var conditions = [];
-	var evidence   = [];
+    var results = {
+        primary:   [],
+        secondary: []
+    };
 
-	var conditions_formula = `OR(FIND(LOWER("${q}"), LOWER(Description)), FIND(LOWER("${q}"), LOWER(Synonyms)))`;
-	console.log('conditions formula:', conditions_formula);
+    var conditions_formula = `OR(FIND(LOWER("${q}"), LOWER(Description)), FIND(LOWER("${q}"), LOWER(Synonyms)))`;
+    console.log('conditions formula:', conditions_formula);
 
-	db("conditions").select({filterByFormula: conditions_formula}).firstPage(function(error, records) {
-		if (records == null || records.length == 0) {
-			complete({evidence: evidence, conditions: conditions});
-			return;
-		}
+    var records = await db("conditions").select({filterByFormula: conditions_formula}).all();
+    console.log('records', records.length);
 
-		conditions = records.map((r) => r.get('Description'));
-		var condition_ids = records.map((r) => r.get('ID'));
-    	console.log('conditions:', condition_ids, conditions);
+    if (records == null || records.length == 0) {
+        return results;
+    }
 
-    	if (condition_ids.length == 0) {
-			throw "expected at least 1 condition id";
-		}
+    var related_conditions = [];
 
-		var evidence_formula = '';
-    	condition_ids.forEach(function(id) {
-			if (condition_ids.length == 1) {
-				evidence_formula = `FIND(${id}, Condition)`;
-			} else {
-				evidence_formula = "OR(";
-				condition_ids.forEach((id) => {evidence_formula += `FIND(${id}, Condition),`;});
-				evidence_formula = evidence_formula.replace(/,+$/, ")");
-			}
-		});
+    records.forEach(function(r) {
+        let condition = {
+            id:           r.id,
+            description:  r.get('Description'),
+            introduction: r.get('Introduction'),
+            insights:     r.get('Insights_highest'),
+            evidence:     r.get('Related evidence').length
+        };
+        results.primary.push(condition);
 
-		console.log('evidence formula:', evidence_formula);
+        related_conditions = related_conditions.concat(r.get('Related conditions'));
+    });
 
-		db("evidence").select({filterByFormula: evidence_formula}).firstPage(function(error, records) {
-			if (records == null || records.length == 0) {
-				complete({evidence: evidence, conditions: conditions});
-				return;
-			}
+    console.log('related conditions raw', related_conditions);
 
-		    records.forEach(function(record) {
-	    	    evidence.push({
-	    	    	title:   record.get('Study Title'),
-					authors: record.get('First Author'),
-					journal: record.get('Journal'),
-					summary: record.get('Summary')
-	    	    });
-	    	});
+    // Reduce to unique conditions (not including primary)
+    if (related_conditions.length > 0) {
+        related_conditions = [...new Set(related_conditions)];
 
-	    	console.log('evidence:', evidence.length, evidence.map((r) => r.title));
+        results.primary.forEach(function(condition) {
+            const index = related_conditions.indexOf(condition.id);
+            if (index > -1) {
+              related_conditions.splice(index, 1);
+            }
+        });
+    }
+    
+    console.log('related conditions unique', related_conditions);
 
-	    	complete({evidence: evidence, conditions: conditions});
-	    });
-	});
+    conditions_formula = '';
+    if (related_conditions.length == 1) {
+        conditions_formula = `FIND(${related_conditions[0]}, ID)`;
+    } else if (related_conditions.length > 1) {
+        conditions_formula = "OR(";
+        related_conditions.forEach((id) => {conditions_formula += `FIND(${id}, ID),`;});
+        conditions_formula = conditions_formula.replace(/,+$/, ")");
+    }
 
-	// TODO
-	//   - error handling for empty/null results
-	//   - account for results that spill beyond "firstPage" (eg: results > 100)
-	//   - expand current assumption that only conditions are being searched
-	//   - move away from airtable for simpler querying, lower latency
+    console.log('conditions formula:', conditions_formula);
+
+    // records = await db("conditions").select({filterByFormula: conditions_formula}).all();
+
+    console.log('records', records.length);
+
+
+    console.log('results', results);
+
+    return results;
+
+    // TODO
+    //   - error handling for empty/null results
+    //   - account for results that spill beyond "firstPage" (eg: results > 100)
+    //   - expand current assumption that only conditions are being searched
+    //   - move away from airtable for simpler querying, lower latency
 }
 
 module.exports = router;

@@ -6,25 +6,23 @@
 </head>
 <body>
     <%- include('partials/search_header') %>
-    <div class="search_results" id="search_results">
-    	<% if (evidence.length == 0) { %>
+    <div class="search-results">
+    	<% if (conditions.primary.length == 0) { %>
     		<p>No results found</p>
     	<% } else { %>
-	    	<p>Showing <%= evidence.length %> results for <%= q %> (<%= conditions.join(', ') %>)</p>
-	    	<% for (var i = 0; i < evidence.length; i++) { %>
-		    	<div class="search_results_item">
-		    		<a class="search_results_item_title" href="TODO">
-		    			<%= evidence[i].title %>
-		    		</a>
-		    		<div class="search_results_item_authors">
-		    			<%= evidence[i].authors %>
-		    		</div>
-		    		<div class="search_results_item_journal">
-		    			<%= evidence[i].journal %>
-		    		</div>
-		    		<div class="search_results_item_summary">
-		    			<%= evidence[i].summary %>
-		    		</div>
+	    	<p>Showing results for <em><%= q %></em></p>
+	    	<% for (var i = 0; i < conditions.primary.length; i++) { %>
+		    	<div class="card">
+		    		<div class="card-body">
+		    		    <h4 class="card-title"><%= conditions.primary[i].description %></h4>
+			    		<h6 class="card-title">Introduction</h6>
+			    		<p><%= conditions.primary[i].introduction %></p>
+			    		<h6 class="card-title">Insights</h6>
+			    		<p><%= conditions.primary[i].insights %></p>
+			    		<h6 class="card-title">Evidence</h6>
+			    		<p><%= conditions.primary[i].evidence %> publications</p>
+			    		<a href="/condition/<%= conditions.primary[i].description %>" class="btn btn-primary cta">View details</a>
+			    	</div>
 		    	</div>
 		    <% } %>
 	    <% } %>
