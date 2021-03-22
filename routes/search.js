@@ -6,7 +6,7 @@ var airtable = require('airtable');
 /* GET search results */
 router.get('/', async function(req, res, next) {
     console.log('search query', req.query.q);
-    var results = await db_search_test(req.query.q);
+    var results = await db_search(req.query.q);
     console.log('search results', results);
 
     res.render('search', {
@@ -16,7 +16,7 @@ router.get('/', async function(req, res, next) {
     });
 });
 
-async function db_search_test(q) {
+async function db_search(q) {
     const db = airtable.base("app869zB8b6uHjyHS");
 
     var results = {
@@ -70,16 +70,29 @@ async function db_search_test(q) {
         conditions_formula = `FIND(${related_conditions[0]}, ID)`;
     } else if (related_conditions.length > 1) {
         conditions_formula = "OR(";
-        related_conditions.forEach((id) => {conditions_formula += `FIND(${id}, ID),`;});
+        related_conditions.forEach((id) => {conditions_formula += `FIND("${id}", RECORD_ID()),`;});
         conditions_formula = conditions_formula.replace(/,+$/, ")");
     }
 
     console.log('conditions formula:', conditions_formula);
 
-    // records = await db("conditions").select({filterByFormula: conditions_formula}).all();
-
+    records = await db("conditions").select({filterByFormula: conditions_formula}).all();
     console.log('records', records.length);
 
+    if (records == null || records.length == 0) {
+        return results;
+    }
+
+    records.forEach(function(r) {
+        let condition = {
+            id:           r.id,
+            description:  r.get('Description'),
+            introduction: r.get('Introduction'),
+            insights:     r.get('Insights_highest'),
+            evidence:     r.get('Related evidence').length
+        };
+        results.secondary.push(condition);
+    });
 
     console.log('results', results);
 
