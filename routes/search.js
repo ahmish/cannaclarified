@@ -65,7 +65,7 @@ async function db_search(q) {
     
     console.log('related conditions unique', related_conditions);
 
-    if (related_conditions.length == 0) {
+    if (related_conditions.length == 0 || (related_conditions.length == 1 && related_conditions[0] == undefined)) {
         return results;
     }
 
