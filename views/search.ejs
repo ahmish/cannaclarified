@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%- include('partials/html_head') %>
+    <%- include('partials/html_head') %>
     <title><%= q %> - <%= title %></title>
 </head>
 <body>
     <%- include('partials/search_header') %>
     <div class="search-results">
-    	<% if (conditions.primary.length == 0) { %>
-    		<p>No results found</p>
-    	<% } else { %>
-	    	<p class="section-header">Showing results for <em><%= q %></em></p>
-	    	<% for (var i = 0; i < conditions.primary.length; i++) { %>
-		    	<div class="card">
-		    		<div class="card-body">
-		    		    <h4 class="card-title"><%= conditions.primary[i].description %></h4>
-			    		<h6 class="card-title">Introduction</h6>
-			    		<p><%= conditions.primary[i].introduction %></p>
-			    		<h6 class="card-title">Insights</h6>
-			    		<p><%= conditions.primary[i].insights %></p>
-			    		<h6 class="card-title">Evidence</h6>
-			    		<p><%= conditions.primary[i].evidence %> publications</p>
-			    		<a href="/condition/<%= conditions.primary[i].description %>" class="btn btn-primary cta">View details</a>
-			    	</div>
-		    	</div>
-		    <% } %>
+        <% if (conditions.primary.length == 0) { %>
+            <p>No results found</p>
+        <% } else { %>
+            <p class="section-header">Showing results for <em><%= q %></em></p>
+            <% for (var i = 0; i < conditions.primary.length; i++) { %>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"><%= conditions.primary[i].description %></h4>
+                        <h6 class="card-title">Introduction</h6>
+                        <p><%= conditions.primary[i].introduction %></p>
+                        <h6 class="card-title">Insights</h6>
+                        <p><%= conditions.primary[i].insights %></p>
+                        <h6 class="card-title">Evidence</h6>
+                        <p><%= conditions.primary[i].evidence %> <%= conditions.primary[i].evidence == 1 ? "publication" : "publications" %></p>
+                        <a href="/condition/<%= conditions.primary[i].description %>" class="btn btn-primary cta">View details</a>
+                    </div>
+                </div>
+            <% } %>
 
-		    <% if (conditions.secondary.length > 0) { %>
-		    	<p class="section-header">Related results</p>
-		    	<% for (var i = 0; i < conditions.secondary.length; i++) { %>
-			    	<div class="card">
-			    		<div class="card-body">
-			    		    <h4 class="card-title"><%= conditions.secondary[i].description %></h4>
-				    		<h6 class="card-title">Introduction</h6>
-				    		<p><%= conditions.secondary[i].introduction %></p>
-				    		<h6 class="card-title">Insights</h6>
-				    		<p><%= conditions.secondary[i].insights %></p>
-				    		<h6 class="card-title">Evidence</h6>
-				    		<p><%= conditions.secondary[i].evidence %> publications</p>
-				    		<a href="/condition/<%= conditions.secondary[i].description %>" class="btn btn-primary cta">View details</a>
-				    	</div>
-			    	</div>
-			    <% } %>
-		    <% } %>
-	    <% } %>
+            <% if (conditions.secondary.length > 0) { %>
+                <p class="section-header">Related results</p>
+                <% for (var i = 0; i < conditions.secondary.length; i++) { %>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"><%= conditions.secondary[i].description %></h4>
+                            <h6 class="card-title">Introduction</h6>
+                            <p><%= conditions.secondary[i].introduction %></p>
+                            <h6 class="card-title">Insights</h6>
+                            <p><%= conditions.secondary[i].insights %></p>
+                            <h6 class="card-title">Evidence</h6>
+                            <p><%= conditions.secondary[i].evidence %> <%= conditions.secondary[i].evidence == 1 ? "publication" : "publications" %></p>
+                            <a href="/condition/<%= conditions.secondary[i].description %>" class="btn btn-primary cta">View details</a>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        <% } %>
     </div>
     <%- include('partials/html_foot') %>
 </body>
