@@ -22,7 +22,7 @@
                     </h4>
             <% } %>
                     <p class="item">
-                        <a href="/condition/<%= conditions[i] %>"><%= conditions[i] %></a>
+                        <a href="/condition/<%= encodeURIComponent(conditions[i]) %>"><%= conditions[i] %></a>
                     </p>
         <% } %>
     </div>

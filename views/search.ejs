@@ -21,7 +21,7 @@
                         <p><%= conditions.primary[i].insights %></p>
                         <h6 class="card-title">Evidence</h6>
                         <p><%= conditions.primary[i].evidence %> <%= conditions.primary[i].evidence == 1 ? "publication" : "publications" %></p>
-                        <a href="/condition/<%= conditions.primary[i].description %>" class="btn btn-primary cta">View details</a>
+                        <a href="/condition/<%= encodeURIComponent(conditions.primary[i].description) %>" class="btn btn-primary cta">View details</a>
                     </div>
                 </div>
             <% } %>
@@ -38,7 +38,7 @@
                             <p><%= conditions.secondary[i].insights %></p>
                             <h6 class="card-title">Evidence</h6>
                             <p><%= conditions.secondary[i].evidence %> <%= conditions.secondary[i].evidence == 1 ? "publication" : "publications" %></p>
-                            <a href="/condition/<%= conditions.secondary[i].description %>" class="btn btn-primary cta">View details</a>
+                            <a href="/condition/<%= encodeURIComponent(conditions.secondary[i].description) %>" class="btn btn-primary cta">View details</a>
                         </div>
                     </div>
                 <% } %>
