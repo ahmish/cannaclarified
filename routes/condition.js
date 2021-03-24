@@ -30,7 +30,7 @@ function db_search(condition_name, complete) {
     var condition = {};
     var evidence  = [];
 
-    var conditions_formula = `FIND(LOWER("${condition_name}"), LOWER(Description))`;
+    var conditions_formula = `FIND("${condition_name}", Description)`;
     console.log('conditions formula:', conditions_formula);
 
     db("conditions").select({filterByFormula: conditions_formula}).firstPage(function(error, records) {
