@@ -28,10 +28,10 @@
                         <tr>
                             <th>Author (Year)</th>
                             <th>Study Design</th>
+                            <th>Sample Size</th>
                             <th>Population</th>
                             <th>Outcome</th>
                             <th>Problem</th>
-                            <th>Sample Size</th>
                             <th>Results</th>
                         </tr>
                     </thead>
@@ -39,10 +39,10 @@
                         <tr>
                             <td><a href="<%= evidence[i].link %>" target="_blank"><%= `${evidence[i].author} (${evidence[i].year})` %></a></td>
                             <td><%= evidence[i].design.join(', ') %></td>
+                            <td><%= evidence[i].sample_size %></td>
                             <td><%= evidence[i].population %></td>
                             <td><%= evidence[i].outcome %></td>
                             <td><%= evidence[i].problem %></td>
-                            <td><%= evidence[i].sample_size %></td>
                             <td><%= evidence[i].results %></td>
                         </tr>
                     <% } %>
