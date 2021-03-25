@@ -51,7 +51,7 @@ function db_search(condition_name, complete) {
 
         console.log('condition:', condition);
 
-        var evidence_formula = `FIND(${condition.id}, Condition)`;
+        var evidence_formula = `FIND("${condition.id}", Condition)`;
         console.log('evidence formula:', evidence_formula);
 
         db("evidence").select({filterByFormula: evidence_formula}).firstPage(function(error, records) {
