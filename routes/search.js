@@ -70,9 +70,7 @@ async function db_search(q) {
     }
 
     conditions_formula = '';
-    if (related_conditions.length == 1) {
-        conditions_formula = `FIND(${related_conditions[0]}, ID)`;
-    } else if (related_conditions.length > 1) {
+    if (related_conditions.length > 0) {
         conditions_formula = "OR(";
         related_conditions.forEach((id) => {conditions_formula += `FIND("${id}", RECORD_ID()),`;});
         conditions_formula = conditions_formula.replace(/,+$/, ")");
