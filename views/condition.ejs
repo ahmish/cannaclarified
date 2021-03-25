@@ -39,7 +39,7 @@
                         <tr>
                             <td><a href="<%= evidence[i].link %>" target="_blank"><%= `${evidence[i].author} (${evidence[i].year})` %></a></td>
                             <td><%= evidence[i].design.join(', ') %></td>
-                            <td><%= evidence[i].sample_size %></td>
+                            <td><%= evidence[i].sample_size == 0 ? 'N/A' : evidence[i].sample_size %></td>
                             <td><%= evidence[i].population %></td>
                             <td><%= evidence[i].outcome %></td>
                             <td><%= evidence[i].problem %></td>
