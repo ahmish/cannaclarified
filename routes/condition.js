@@ -45,7 +45,7 @@ function db_search(condition_name, complete) {
             id:           records[0].get('ID'),
             description:  records[0].get('Description'),
             introduction: records[0].get('Introduction'),
-            insights:     [records[0].get('Insights_highest'), records[0].get('Insights_moderate'), records[0].get('Insights_lowest')],
+            insights:     [records[0].get('Insights_highest'), records[0].get('Insights_lowest')],
             references:   records[0].get('References').split('|')
         };
 
