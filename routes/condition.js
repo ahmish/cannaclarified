@@ -67,7 +67,7 @@ function db_search(condition_name, complete) {
                     design:      record.get('Study_design lookup'),
                     population:  record.get('Patient or Population'),
                     outcome:     record.get('Outcomes'),
-                    problem:     record.get('Problem'),
+                    intervention:record.get('intervention'),
                     sample_size: record.get('number_subjects_start'),
                     results:     record.get('Results'),
                     link:        record.get('DOI')
