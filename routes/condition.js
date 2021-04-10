@@ -81,7 +81,8 @@ function db_search(condition_name, complete) {
 
             let average = (array) => array.reduce((a, b) => a + b) / array.length;
             var ratings = evidence.map(x => x.rating);
-            var agg_rating = average(ratings);
+            var avg_rating = average(ratings);
+            var agg_rating = Math.round((avg_rating + Number.EPSILON) * 100) / 100;
             condition.agg_rating = agg_rating;
 
             complete({condition: condition, evidence: evidence});
