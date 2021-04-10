@@ -18,7 +18,7 @@
             <h5>No to minimal evidence</h5> <p><%= condition.insights[1] %></p>
         </div>
         <div>
-            <h3>Evidence</h3>
+            <h3>Evidence <small class="text-muted">(Total rating = <%= condition.agg_rating %>)</small></h3>
             <% if (evidence.length == 0) { %>
                 No supporting evidence
             <% } else { %>
@@ -32,6 +32,7 @@
                             <th>Outcome</th>
                             <th>Intervention</th>
                             <th>Results</th>
+                            <th>Rating</th>
                         </tr>
                     </thead>
                     <% for (var i = 0; i < evidence.length; i++) { %>
@@ -43,6 +44,7 @@
                             <td><%= evidence[i].outcome %></td>
                             <td><%= evidence[i].intervention %></td>
                             <td><%= evidence[i].results %></td>
+                            <td><%= evidence[i].rating %></td>
                         </tr>
                     <% } %>
                 </table>

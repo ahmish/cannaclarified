@@ -66,15 +66,23 @@ function db_search(condition_name, complete) {
                     year:        record.get('Year published'),
                     design:      record.get('Study_design lookup'),
                     population:  record.get('Patient or Population'),
-                    outcome:     record.get('Outcomes'),
+                    outcome:     record.get('outcomes_table'),
+                    // outcome:     record.get('Outcomes'),
                     intervention:record.get('intervention'),
                     sample_size: record.get('number_subjects_start'),
-                    results:     record.get('Results'),
-                    link:        record.get('DOI')
+                    results:     record.get('results_table'),
+                    // results:     record.get('Results'),
+                    link:        record.get('DOI'),
+                    rating:      record.get('evidence_rating')
                 });
             });
 
             console.log('evidence:', evidence);
+
+            let average = (array) => array.reduce((a, b) => a + b) / array.length;
+            var ratings = evidence.map(x => x.rating);
+            var agg_rating = average(ratings);
+            condition.agg_rating = agg_rating;
 
             complete({condition: condition, evidence: evidence});
         });
